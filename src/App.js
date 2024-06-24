@@ -1,30 +1,16 @@
 import { useState, useRef } from 'react';
 
-export default function Chat() {
-  const [text, setText] = useState('');
-  const textRef = useRef('');
+export default function Form() {
+  const inputRef = useRef(null);
 
-  function handleSend() {
-    setTimeout(() => {
-      alert('Sending: ' + textRef.current);
-    }, 3000);
-  }
-
-  function handleChange(e) {
-    setText(e.target.value);
-    textRef.current = e.target.value;
+  function handleClick() {
+    inputRef.current.focus();
   }
 
   return (
     <>
-      <input
-        value={text}
-        onChange={handleChange}
-      />
-      <button
-        onClick={handleSend}>
-        Send
-      </button>
+      <input ref={inputRef}/>
+      <button onClick={handleClick}>Focus the input</button>
     </>
   );
 }
