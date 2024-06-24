@@ -1,40 +1,13 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
-export default function Chat() {
-  const [text, setText] = useState('');
-  const [isSending, setIsSending] = useState(false);
-  let timeoutIDRef = useRef(null);
-
-  function handleSend() {
-    setIsSending(true);
-    timeoutIDRef.current = setTimeout(() => {
-      alert('Sent!');
-      setIsSending(false);
-    }, 3000);
-  }
-
-  function handleUndo() {
-    setIsSending(false);
-    clearTimeout(timeoutIDRef.current);
-  }
+export default function Toggle() {
+  const isOnRef = useRef(false);
 
   return (
-    <>
-      <input
-        disabled={isSending}
-        value={text}
-        onChange={e => setText(e.target.value)}
-      />
-      <button
-        disabled={isSending}
-        onClick={handleSend}>
-        {isSending ? 'Sending...' : 'Send'}
-      </button>
-      {isSending &&
-        <button onClick={handleUndo}>
-          Undo
-        </button>
-      }
-    </>
+    <button onClick={() => {
+      isOnRef.current = !isOnRef.current;
+    }}>
+      {isOnRef.current ? 'On' : 'Off'}
+    </button>
   );
 }
