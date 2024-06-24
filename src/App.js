@@ -1,34 +1,40 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-export default function Stopwatch() {
-  const [startTime, setStartTime] = useState(null);
-  const [now, setNow] = useState(null);
-  const intervalRef = useRef(null);
+export default function Chat() {
+  const [text, setText] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  let timeoutID = null;
 
-  function handleStart() {
-    setStartTime(Date.now());
-    setNow(Date.now());
-
-    clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setNow(Date.now());
-    }, 10);
+  function handleSend() {
+    setIsSending(true);
+    timeoutID = setTimeout(() => {
+      alert('Sent!');
+      setIsSending(false);
+    }, 3000);
   }
 
-  function handleStop() {
-    clearInterval(intervalRef.current);
-  }
-
-  let secondPassed = 0;
-  if (startTime !== null && now !== null) {
-    secondPassed = (now - startTime) / 1000;
+  function handleUndo() {
+    setIsSending(false);
+    clearTimeout(timeoutID);
   }
 
   return (
     <>
-      <h1>Time passed: {secondPassed.toFixed(3)}</h1>
-      <button onClick={handleStart}>Start</button>
-      <button onClick={handleStop}>Stop</button>
+      <input
+        disabled={isSending}
+        value={text}
+        onChange={e => setText(e.target.value)}
+      />
+      <button
+        disabled={isSending}
+        onClick={handleSend}>
+        {isSending ? 'Sending...' : 'Send'}
+      </button>
+      {isSending &&
+        <button onClick={handleUndo}>
+          Undo
+        </button>
+      }
     </>
   );
 }
