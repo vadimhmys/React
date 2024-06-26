@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-export default function SearchInput() {
-  return <input placeholder="Looking for something?" />;
-}
+export default forwardRef(
+  function SearchInput(props, ref) {
+    return <input placeholder="Looking for something?" ref={ref}/>;
+  }
+);
