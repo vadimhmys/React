@@ -1,14 +1,24 @@
 import { useState, useRef } from 'react';
 
-export default function Counter() {
-  const [show, setShow] = useState(true);
-  const ref = useRef(null);
+export default function VideoPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  function handleClick() {
+    const nextIsPlaying = !isPlaying;
+    setIsPlaying(nextIsPlaying);
+  }
 
   return (
-    <div>
-      <button onClick={() => setShow(!show)}>Toggle with setState</button>
-      <button onClick={() => ref.current.remove()}>Remove from the DOM</button>
-      {show && <p ref={ref}>Hello world</p>}
-    </div>
-  );
+    <>
+      <button onClick={handleClick}>
+        {isPlaying ? 'Pause' : 'Play'}
+      </button>
+      <video width="250">
+        <source
+          src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+          type="video/mp4"
+        />
+      </video>
+    </>
+  )
 }
