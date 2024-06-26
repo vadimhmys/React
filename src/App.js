@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, forwardRef } from 'react';
 
-function MyInput(props) {
-  return <input {...props} />
-}
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref}/>
+});
 
 export default function MyForm() {
   const inputRef = useRef(null);
