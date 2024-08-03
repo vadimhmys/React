@@ -1,30 +1,23 @@
-import React from 'react';
-import IMask from 'imask';
+import React, { forwardRef } from 'react';
 
-const InputPhone = () => {
-  const inputRef = React.useRef();
-  React.useEffect(() => {
-    const element = inputRef.current;
-    console.log('element', element);
-    if (element) {
-      let maskOptions = {
-        mask: '+375(00) 000-00-00',
-        lazy: false,
-      };
-      new IMask(element, maskOptions);
-    }
-  }, []);
-
+const InputPhone = forwardRef(({register, errors, onChange}, ref) => {
   return (
     <>
       <div className="row">
         <label htmlFor="phone">Телефон:</label>
       </div>
       <div className="row">
-        <input type="tel" name="phone" ref={inputRef} />
+        <input {...register('phone', {
+          required: true
+        })} 
+        type="text"
+        ref={ref}
+        id="phone"
+        />
+        {errors?.phone && <p>{errors.phone.message}</p>}
       </div>
     </>
   );
-};
+});
 
 export default InputPhone;
