@@ -8,12 +8,12 @@ const InputName = ({errors, register}) => {
       </div>
       <div className="row">
         <input {...register('name', {
-          required: true
+          required: 'Поле обязательно к заполнению'
         })} 
         type="text"
         id="name"
         />
-        {errors?.name && <p>{errors.name.message}</p>}
+        {errors?.name && <p style={{margin: '0px', color: 'red'}}>{errors.name.message}</p>}
       </div>
     </>
   );
