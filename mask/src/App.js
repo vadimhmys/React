@@ -2,24 +2,59 @@ import React from 'react';
 import InputPhone from './InputPhone';
 import { useForm } from 'react-hook-form';
 import InputName from './InputName';
+import IMask from 'imask';
+
+const maskOptions = {
+  mask: '+375(00) 000-00-00',
+  lazy: false,
+};
 
 function App() {
-  const clearField = React.useRef(false);
+  const prevMask = React.useRef(null);
+  const inputRef = React.useRef(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     setValue,
-    reset
+    reset,
+    watch,
   } = useForm({
     mode: 'onChange',
+    defaultValues: {
+      name: '',
+      phone: ''
+    }
   });
 
-  const onSubmit = ( data ) => {
-    console.log(data);
+ const createMask = () => {
+  const element = inputRef.current;
+    if (element) {
+      return new IMask(element, maskOptions);
+    }
+    return null;
+ };
+  
+  React.useEffect(() => {
+      const mask = createMask();
+      prevMask.current = mask;
+      if (mask) {
+        mask.on('accept', () => {
+          setValue('phone', `${mask.value}`);
+        });
+      }
+  }, [setValue]);
+
+  const onSubmit = (data) => {
     reset();
-    clearField.current = !clearField.current;
+    prevMask.current.destroy();
+    const mask = createMask();
+      prevMask.current = mask;
+      if (mask) {
+        mask.on('accept', () => {
+          setValue('phone', `${mask.value}`);
+        });
+      }
   };
 
   React.useEffect(() => {
@@ -31,7 +66,12 @@ function App() {
     <div className="App">
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputName errors={errors} register={register} />
-        <InputPhone errors={errors} register={register} setValue={setValue} clearField={clearField.current}/>
+        <InputPhone
+          errors={errors}
+          register={register}
+          setValue={setValue}
+          ref={inputRef}
+        />
         <input type="submit" />
       </form>
     </div>
